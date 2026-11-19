@@ -1088,6 +1088,27 @@ static struct jz_spi_support jz_spi_support_table[] = {
 		},
 	},
 	{
+		.name           = "FM25Q256",
+		.id_manufactory = 0xa14019,
+		.page_size       = 256,
+		.sector_size      = (32 * 1024),
+		.addr_size = 4,
+		.size           = (32 * 1024 * 1024),
+		.quad_mode = {
+			.dummy_byte = 8,
+			.RDSR_CMD = CMD_RDSR_1,
+			.WRSR_CMD = CMD_WRSR_1,
+			.RDSR_DATE = 0x2,
+			.RD_DATE_SIZE = 1,
+			.WRSR_DATE = 0x2,
+			.WD_DATE_SIZE = 1,
+			.cmd_read = CMD_QUAD_READ,
+#ifdef CONFIG_JZ_SFC
+			.sfc_mode = TRAN_SPI_QUAD,
+#endif
+		},
+	},
+	{
 		.name           = "PY25Q128HA",
 		.id_manufactory = 0x852018,
 		.page_size       = 256,
