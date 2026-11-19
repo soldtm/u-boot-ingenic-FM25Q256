@@ -40,6 +40,7 @@
 #define SPI_FLASH_EN25_IDCODE0      0x1c
 #define SPI_FLASH_XT25_IDCODE0		0x0b
 #define SPI_FLASH_XM25_IDCODE0		0x20
+#define SPI_FLASH_FUDAN_IDCODE0		0xa1
 
 #ifdef CONFIG_SPI_FLASH_BAR
 /* Bank addr access commands */

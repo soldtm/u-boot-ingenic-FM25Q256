@@ -367,6 +367,11 @@ int spi_flash_bank_config(struct spi_flash *flash, u8 idcode0)
 	u8 cmd;
 	u8 curr_bank = 0;
 
+	if (flash->size <= SPI_FLASH_16MB_BOUN) {
+		flash->bank_curr = 0;
+		return 0; // no bank switching needed
+	}
+
 	/* discover bank cmds */
 	switch (idcode0) {
 	case SPI_FLASH_SPANSION_IDCODE0:
@@ -379,6 +384,7 @@ int spi_flash_bank_config(struct spi_flash *flash, u8 idcode0)
 	case SPI_FLASH_MX25_IDCODE0:
 	case SPI_FLASH_EN25_IDCODE0:
 	case SPI_FLASH_XT25_IDCODE0:
+	case SPI_FLASH_FUDAN_IDCODE0:
 		flash->bank_read_cmd = CMD_EXTNADDR_RDEAR;
 		flash->bank_write_cmd = CMD_EXTNADDR_WREAR;
 		break;
@@ -389,15 +395,11 @@ int spi_flash_bank_config(struct spi_flash *flash, u8 idcode0)
 
 	/* read the bank reg - on which bank the flash is in currently */
 	cmd = flash->bank_read_cmd;
-	if (flash->size > SPI_FLASH_16MB_BOUN) {
-		if (spi_flash_read_common(flash, &cmd, 1, &curr_bank, 1)) {
-			debug("SF: fail to read bank addr register\n");
-			return -1;
-		}
-		flash->bank_curr = curr_bank;
-	} else {
-		flash->bank_curr = curr_bank;
+	if (spi_flash_read_common(flash, &cmd, 1, &curr_bank, 1)) {
+		debug("SF: fail to read bank addr register\n");
+		return -1;
 	}
+	flash->bank_curr = curr_bank;
 
 	return 0;
 }
