@@ -468,9 +468,7 @@
 #endif
 #endif /* CONFIG_SPL_SFC_SUPPORT */
 
-#ifdef CONFIG_NORFLASH_32M
 #define CONFIG_SPI_FLASH_BAR
-#endif
 
 /* MTD */
 #define CONFIG_CMD_MTDPARTS
