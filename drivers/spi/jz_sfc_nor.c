@@ -837,12 +837,12 @@ int jz_sfc_erase(struct spi_flash *flash, u32 offset, size_t len)
 		erase_size = 0x1000;
 	}
 
-	if(offset % CONFIG_SFC_MIN_ALIGN) {
+	if(offset % flash->sector_size) {
 		printf("addr align as %x !\n", flash->sector_size);
 		return -1;
 	}
 
-	if(len % CONFIG_SFC_MIN_ALIGN) {
+	if(len % flash->sector_size) {
 		printf("len align as %x !\n", flash->sector_size);
 		return -1;
 	}
